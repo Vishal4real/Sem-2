@@ -1,0 +1,91 @@
+Q1.Create an HTML form for Login and write a JavaScript to validate email ID 
+and Password using Regular Expression
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Login Form</title>
+  <style>
+</head>
+<body>
+  <h2>Login Form</h2>
+  <form id="loginForm" onsubmit="return validateForm()">
+    <div>
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email">
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
+    </div>
+    <div>
+      <button type="submit">Login</button>
+    </div>
+  </form>
+
+  <script>
+    function validateForm() {
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      var passwordRegex = /^.{8,}$/;
+
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address');
+      }
+      if (!passwordRegex.test(password)) {
+        alert('Password must be at least 8 characters long') ;
+      } 
+    }
+  </script>
+</body>
+</html>
+
+Q2.Create an HTML form that contain the Student Registration details and write a JavaScript to
+validate Student first and last name as it should not contain other than alphabets and age should
+be between 18 to 50.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Registration</title>
+</head>
+<body>
+    <h2>Student Registration Form</h2>
+    <form id="registrationForm" onsubmit="validateForm()">
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div><br>
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div><br>
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div><br>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+    <script>
+        function validateForm() {
+            var firstName = document.getElementById('firstName').value.trim();
+            var lastName = document.getElementById('lastName').value.trim();
+            var age = parseInt(document.getElementById('age').value);
+            if (!/^[A-Za-z]+$/.test(firstName)) {
+                alert("First name should contain only alphabets");
+            }
+            if (!/^[A-Za-z]+$/.test(lastName)) {
+                alert("Last name should contain only alphabets");
+            }
+            if (isNaN(age) || age < 18 || age > 50) {
+                alert("Age should be between 18 and 50");
+            }
+        }
+    </script>
+</body>
+</html>
