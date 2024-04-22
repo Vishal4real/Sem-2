@@ -1,0 +1,138 @@
+Q1.Using node js create a User Login System.
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+const users = [
+  { id: 1, email: 'user@example.com', password: 'password123' },
+  { id: 2, email: 'admin@example.com', password: 'admin123' }
+];
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.get('/', (req, res) => {
+  res.send('<h1>Welcome to the login page</h1><a href="/login">Login</a>');
+});
+
+app.get('/login', (req, res) => {
+  res.send(`
+    <h1>Login</h1>
+    <form action="/auth/login" method="POST">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required>
+
+      <button type="submit">Login</button>
+    </form>
+  `);
+});
+
+app.post('/auth/login', (req, res) => {
+  const { email, password } = req.body;
+
+  // Find user by email
+  const user = users.find(user => user.email === email);
+
+  if (!user) {
+    return res.status(401).send('<h1>Invalid email or password</h1>');
+  }
+
+  if (user.password !== password) {
+    return res.status(401).send('<h1>Invalid email or password</h1>');
+  }
+
+  res.redirect('/');
+});
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+
+Q2.Create a node.js file that Select all records from the "Teacher" table, and find the Teachers
+whose salary is greater than 20,000.
+
+//npm install mongodb
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongo uri";
+const dbName = 'databse_name';
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function main() {
+  try {
+    await client.connect();
+    console.log('Connected to the database');
+
+    const database = client.db(dbName);
+    const teacherCollection = database.collection('Teacher');
+
+    const teachers = await teacherCollection.find({ "Salary": { $gt: 20000 } }).toArray();
+
+    console.log('Teachers with salary greater than 20,000:');
+    teachers.forEach(teacher => {
+      console.log(teacher);
+    });
+  } catch (err) {
+    console.error('Error occurred:', err);
+  } finally {
+
+    await client.close();
+    console.log('Disconnected from the database');
+  }
+}
+
+main().catch(console.error);
+
+//npm install mysql
+
+const mysql = require('mysql');
+
+// MySQL connection configuration
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'your_mysql_username',
+  password: 'your_mysql_password',
+  database: 'your_database_name'
+});
+
+// Connect to MySQL
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
+  }
+  console.log('Connected to MySQL database');
+});
+
+// Query to select teachers with salary greater than 20,000
+const sql = 'SELECT * FROM Teacher WHERE Salary > 20000';
+
+// Execute the query
+connection.query(sql, (err, results) => {
+  if (err) {
+    console.error('Error executing MySQL query:', err);
+    return;
+  }
+
+  // Output the teachers whose salary is greater than 20,000
+  console.log('Teachers with salary greater than 20,000:');
+  results.forEach(teacher => {
+    console.log(teacher);
+  });
+
+  // Close the connection to MySQL
+  connection.end();
+  console.log('Disconnected from MySQL database');
+});

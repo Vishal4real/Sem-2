@@ -1,0 +1,74 @@
+Q1 Create a Simple Web Server using node js
+
+const http = require('http');
+const PORT = 3000;
+
+const server = http.createServer((req, res) => {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('<h1>Hello, World!</h1>');
+    res.end();
+});
+
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
+Q2 Using angular js display the 10 student details in Table format (using ng-repeat directive use 
+Array to store data)
+
+
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Details</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="StudentController as vm">
+    <h1>Student Details</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="student in vm.students">
+                <td>{{ student.id }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.grade }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+angular.module('studentApp', [])
+    .controller('StudentController', function() {
+        var vm = this;
+
+        // Sample student data
+        vm.students = [
+            { id: 1, name: 'John Doe', age: 20, grade: 'A' },
+            { id: 2, name: 'Jane Smith', age: 21, grade: 'B' },
+            { id: 3, name: 'Michael Johnson', age: 22, grade: 'C' },
+            { id: 4, name: 'Emily Davis', age: 19, grade: 'A' },
+            { id: 5, name: 'James Wilson', age: 20, grade: 'B' },
+            { id: 6, name: 'Emma Brown', age: 21, grade: 'A' },
+            { id: 7, name: 'William Taylor', age: 22, grade: 'C' },
+            { id: 8, name: 'Olivia Martinez', age: 20, grade: 'B' },
+            { id: 9, name: 'Daniel Anderson', age: 21, grade: 'A' },
+            { id: 10, name: 'Sophia Thomas', age: 22, grade: 'C' }
+        ];
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+Q1  Create angular JS Application that show the current Date and Time of the System (Use Interval 
+Service)
+
+<!DOCTYPE html>
+<html lang="en" ng-app="dateTimeApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Date and Time App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="DateTimeController as vm">
+    <h1>Current Date and Time</h1>
+    <p>{{ vm.currentDateTime }}</p>
+</div>
+
+<script>
+angular.module('dateTimeApp', [])
+    .controller('DateTimeController', ['$interval', function($interval) {
+        var vm = this;
+
+        // Function to update current date and time
+        function updateDateTime() {
+            vm.currentDateTime = new Date().toLocaleString();
+        }
+
+        // Initial call to update date and time
+        updateDateTime();
+
+        // Update date and time every second using $interval service
+        var intervalPromise = $interval(updateDateTime, 1000);
+
+        // Cancel interval when controller is destroyed to prevent memory leaks
+        vm.$onDestroy = function() {
+            $interval.cancel(intervalPromise);
+        };
+    }]);
+</script>
+
+</body>
+</html>
+
+Q2 Create a node js file named main.js for event-driven application. There should be a main loop 
+that listens for events, and then triggers a callback function when one of those events is 
+detected.
+
+// Import the required modules
+const EventEmitter = require('events');
+
+// Create an instance of EventEmitter
+const eventEmitter = new EventEmitter();
+
+// Register event listeners
+eventEmitter.on('event1', () => {
+    console.log('Event 1 occurred');
+});
+
+eventEmitter.on('event2', () => {
+    console.log('Event 2 occurred');
+});
+
+// Simulate events being emitted
+setTimeout(() => {
+    eventEmitter.emit('event1');
+}, 1000);
+
+setTimeout(() => {
+    eventEmitter.emit('event2');
+}, 2000);

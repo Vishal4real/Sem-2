@@ -1,0 +1,126 @@
+Q1.Create a Node.js file that writes an HTML form, with an upload field
+
+//index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Form</title>
+</head>
+<body>
+    <h1>File Upload Form</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
+
+
+//node.js
+// Import required modules
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+// Create Express app
+const app = express();
+
+// Set up middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Define routes
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.post('/upload', (req, res) => {
+    // Handle file upload here
+    const uploadedFile = req.files.file;
+    // Do something with the uploaded file
+    
+    res.send('File uploaded successfully!');
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
+
+Q2  Using angular js create a SPA to carry out validation for a username entered in a textbox. If the 
+textbox is blank, alert “Enter username”. If the number of characters is less than three, alert ‟ 
+Username is too short”. If value entered is appropriate the print “Valid username” and 
+password should be minimum 8 characters
+
+
+<!DOCTYPE html>
+<html lang="en" ng-app="validationApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="ValidationController as vm">
+    <h1>Username and Password Validation</h1>
+    
+    <label for="username">Username:</label>
+    <input type="text" id="username" ng-model="vm.username" ng-change="vm.validateUsername()">
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" ng-model="vm.password" ng-change="vm.validatePassword()">
+    <br>
+    <button ng-click="vm.submitForm()">Submit</button>
+    
+    <div ng-if="vm.usernameError">{{ vm.usernameError }}</div>
+    <div ng-if="vm.passwordError">{{ vm.passwordError }}</div>
+</div>
+
+<script>
+angular.module('validationApp', [])
+    .controller('ValidationController', function() {
+        var vm = this;
+
+        vm.username = '';
+        vm.password = '';
+        vm.usernameError = '';
+        vm.passwordError = '';
+
+        vm.validateUsername = function() {
+            if (!vm.username) {
+                vm.usernameError = 'Enter username';
+            } else if (vm.username.length < 3) {
+                vm.usernameError = 'Username is too short';
+            } else {
+                vm.usernameError = '';
+            }
+        };
+
+        vm.validatePassword = function() {
+            if (vm.password.length < 8) {
+                vm.passwordError = 'Password is too short';
+            } else {
+                vm.passwordError = '';
+            }
+        };
+
+        vm.submitForm = function() {
+            vm.validateUsername();
+            vm.validatePassword();
+
+            if (!vm.usernameError && !vm.passwordError) {
+                alert('Valid username and password');
+                // You can perform further actions like submitting the form
+            }
+        };
+    });
+</script>
+
+</body>
+</html>

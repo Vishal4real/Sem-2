@@ -1,0 +1,161 @@
+Q.1 Using node js create an eLearning System
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+const courses = [
+  { id: 1, title: 'Introduction to Programming', description: 'Learn the basics of programming', price: 50 },
+  { id: 2, title: 'Advanced Programming', description: 'Take your programming skills to the next level', price: 100 },
+  { id: 3, title: 'Data Science', description: 'Learn the fundamentals of data science', price: 150 }
+];
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+app.get('/', (req, res) => {
+  res.send('<h1>Welcome to the eLearning system</h1><a href="/courses">View Courses</a>');
+});
+
+// Courses route
+app.get('/courses', (req, res) => {
+  let courseList = '';
+
+  courses.forEach(course => {
+    courseList += `
+      <div>
+        <h2>${course.title}</h2>
+        <p>${course.description}</p>
+        <p>Price: $${course.price}</p>
+        <a href="/courses/${course.id}">Enroll</a>
+      </div>
+    `;
+  });
+
+  res.send(`
+    <h1>Courses</h1>
+    ${courseList}
+  `);
+});
+
+// Course detail route
+app.get('/courses/:id', (req, res) => {
+  const courseId = req.params.id;
+  const course = courses.find(course => course.id === parseInt(courseId));
+
+  if (!course) {
+    return res.status(404).send('<h1>Course not found</h1>');
+  }
+
+  res.send(`
+    <h1>${course.title}</h1>
+    <p>${course.description}</p>
+    <p>Price: $${course.price}</p>
+    <a href="/courses">Back to Courses</a>
+  `);
+});
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+
+Q2. Create an HTML form using AngularJS that contain the Student Registration details and 
+validate Student first and last name as it should not contain other than alphabets and age should 
+be between 18 to 50 and display greeting message depending on current time using ng-show 
+(e.g. Good Morning, Good Afternoon, etc.)(Use AJAX).
+
+
+
+
+//index.html<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <title>Student Registration</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+<body>
+  <div ng-controller="StudentController">
+    <h1>Student Registration</h1>
+    <form name="studentForm" novalidate>
+      <label>First Name:</label>
+      <input type="text" name="firstName" ng-model="student.firstName" required ng-pattern="/^[a-zA-Z]+$/" />
+      <span ng-show="studentForm.firstName.$error.pattern">First name should only contain alphabets.</span>
+      <br>
+      <label>Last Name:</label>
+      <input type="text" name="lastName" ng-model="student.lastName" required ng-pattern="/^[a-zA-Z]+$/" />
+      <span ng-show="studentForm.lastName.$error.pattern">Last name should only contain alphabets.</span>
+      <br>
+      <label>Age:</label>
+      <input type="number" name="age" ng-model="student.age" required ng-min="18" ng-max="50" />
+      <span ng-show="studentForm.age.$error.min">Age should be at least 18.</span>
+      <span ng-show="studentForm.age.$error.max">Age should not exceed 50.</span>
+      <br>
+      <button type="submit" ng-click="registerStudent()">Register</button>
+    </form>
+    <div ng-show="greetingMessage">
+      <h2>{{greetingMessage}}</h2>
+    </div>
+  </div>
+
+
+<script>
+  angular.module('myApp', [])
+.controller('StudentController', function($scope, $http) {
+  $scope.student = {};
+  $scope.greetingMessage = '';
+
+  $scope.registerStudent = function() {
+    $http.post('/api/register', $scope.student)
+    .then(function(response) {
+      $scope.greetingMessage = 'Registration successful!';
+    })
+    .catch(function(error) {
+      $scope.greetingMessage = 'Error: ' + error.data.message;
+    });
+  };
+
+  $scope.getGreetingMessage = function() {
+    var currentTime = new Date().getHours();
+    if (currentTime < 12) {
+      return 'Good Morning';
+    } else if (currentTime <script 18) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
+  };
+
+  $scope.greetingMessage = $scope.getGreetingMessage();
+});
+</script>
+</body>
+</html>
+
+
+
+//server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+app.use(bodyParser.json());
+
+app.post('/api/register', (req, res) => {
+  const { firstName, lastName, age } = req.body;
+
+  if (!firstName || !lastName || !age || !/^[a-zA-Z]+$/.test(firstName) || !/^[a-zA-Z]+$/.test(lastName) || age < 18 || age > 50) {
+    return res.status(400).json({ message: 'Invalid input' });
+  }
+
+  // Mock database save
+  console.log('Student registered:', req.body);
+
+  res.status(200).json({ message: 'Student registered successfully' });
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
