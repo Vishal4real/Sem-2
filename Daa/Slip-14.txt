@@ -1,0 +1,125 @@
+Q1
+
+public class InsertionSort {
+
+    static void insertionSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 1; i < n; ++i) {
+            int key = arr[i];
+            int j = i - 1;
+
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j = j - 1;
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {12, 11, 13, 5, 6};
+        
+        long startTime = System.nanoTime(); // Start time
+        insertionSort(arr);
+        long endTime = System.nanoTime(); // End time
+
+        long duration = (endTime - startTime) / 1000; // Duration in microseconds
+
+        System.out.println("Sorted array:");
+        for (int i : arr) {
+            System.out.print(i + " ");
+        }
+
+        System.out.println("\nTime taken for Insertion Sort: " + duration + " microseconds");
+    }
+}
+
+Q2
+
+import java.util.*;
+
+public class DFSvsBFS {
+
+    static class Graph {
+        private int V;
+        private LinkedList<Integer>[] adjList;
+
+        Graph(int V) {
+            this.V = V;
+            adjList = new LinkedList[V];
+            for (int i = 0; i < V; i++) {
+                adjList[i] = new LinkedList<>();
+            }
+        }
+
+        void addEdge(int u, int v) {
+            adjList[u].add(v);
+        }
+
+        void DFSUtil(int v, boolean[] visited) {
+            visited[v] = true;
+            System.out.print(v + " ");
+
+            for (int neighbor : adjList[v]) {
+                if (!visited[neighbor]) {
+                    DFSUtil(neighbor, visited);
+                }
+            }
+        }
+
+        void DFS(int start) {
+            boolean[] visited = new boolean[V];
+            DFSUtil(start, visited);
+        }
+
+        void BFS(int start) {
+            boolean[] visited = new boolean[V];
+            LinkedList<Integer> queue = new LinkedList<>();
+            visited[start] = true;
+            queue.add(start);
+
+            while (!queue.isEmpty()) {
+                start = queue.poll();
+                System.out.print(start + " ");
+
+                for (int neighbor : adjList[start]) {
+                    if (!visited[neighbor]) {
+                        visited[neighbor] = true;
+                        queue.add(neighbor);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int V = 6; // Number of vertices
+        Graph graph = new Graph(V);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(1, 3);
+        graph.addEdge(1, 4);
+        graph.addEdge(2, 4);
+        graph.addEdge(3, 4);
+        graph.addEdge(3, 5);
+        graph.addEdge(4, 5);
+
+        long startTimeDFS = System.nanoTime(); // Start time for DFS
+        System.out.println("Depth First Search:");
+        graph.DFS(0);
+        long endTimeDFS = System.nanoTime(); // End time for DFS
+
+        System.out.println("\n");
+
+        long startTimeBFS = System.nanoTime(); // Start time for BFS
+        System.out.println("Breadth First Search:");
+        graph.BFS(0);
+        long endTimeBFS = System.nanoTime(); // End time for BFS
+
+        long durationDFS = (endTimeDFS - startTimeDFS) / 1000; // Duration of DFS in microseconds
+        long durationBFS = (endTimeBFS - startTimeBFS) / 1000; // Duration of BFS in microseconds
+
+        System.out.println("\n\nTime taken for DFS: " + durationDFS + " microseconds");
+        System.out.println("Time taken for BFS: " + durationBFS + " microseconds");
+    }
+}

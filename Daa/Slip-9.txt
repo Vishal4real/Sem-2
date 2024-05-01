@@ -1,0 +1,79 @@
+Q1 
+public class OptimalBinarySearchTree {
+
+    static float optimalBST(float[] keys, float[] freq, int n) {
+        float[][] cost = new float[n + 1][n + 1];
+
+        for (int i = 0; i < n; i++) {
+            cost[i][i] = freq[i];
+        }
+
+        for (int L = 2; L <= n; L++) {
+            for (int i = 0; i <= n - L + 1; i++) {
+                int j = i + L - 1;
+                cost[i][j] = Float.MAX_VALUE;
+                float sum = getSum(freq, i, j);
+
+                for (int r = i; r <= j; r++) {
+                    float c = ((r > i) ? cost[i][r - 1] : 0) +
+                              ((r < j) ? cost[r + 1][j] : 0) + sum;
+                    if (c < cost[i][j]) {
+                        cost[i][j] = c;
+                    }
+                }
+            }
+        }
+
+        return cost[0][n - 1];
+    }
+
+    static float getSum(float[] freq, int i, int j) {
+        float sum = 0;
+        for (int k = i; k <= j; k++) {
+            sum += freq[k];
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        float[] keys = {10, 12, 20};
+        float[] freq = {34, 8, 50};
+        int n = keys.length;
+
+        float cost = optimalBST(keys, freq, n);
+        System.out.println("Cost of optimal BST is " + cost);
+    }
+}
+
+Q2
+
+public class SubsetSum {
+
+    static boolean subsetSum(int[] arr, int n, int target) {
+        return subsetSumUtil(arr, n, target, 0, 0);
+    }
+
+    static boolean subsetSumUtil(int[] arr, int n, int target, int sum, int index) {
+        if (sum == target) {
+            return true;
+        }
+        if (sum > target || index == n) {
+            return false;
+        }
+
+        return subsetSumUtil(arr, n, target, sum + arr[index], index + 1) || 
+               subsetSumUtil(arr, n, target, sum, index + 1);
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {3, 34, 4, 12, 5, 2};
+        int target = 9;
+        int n = arr.length;
+
+        if (subsetSum(arr, n, target)) {
+            System.out.println("Subset with sum " + target + " exists.");
+        } else {
+            System.out.println("No subset with sum " + target + " exists.");
+        }
+    }
+}

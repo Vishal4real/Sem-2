@@ -1,0 +1,86 @@
+Q1
+
+import java.util.*;
+
+public class HamiltonianCycle {
+
+    static boolean isHamiltonianCycle(int[][] graph) {
+        int V = graph.length;
+        boolean[] visited = new boolean[V];
+        Arrays.fill(visited, false);
+
+        visited[0] = true;
+        if (hamiltonianCycleUtil(graph, visited, 0, 1)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    static boolean hamiltonianCycleUtil(int[][] graph, boolean[] visited, int v, int count) {
+        int V = graph.length;
+
+        if (count == V) {
+            if (graph[v][0] == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < V; i++) {
+            if (graph[v][i] == 1 && !visited[i]) {
+                visited[i] = true;
+                if (hamiltonianCycleUtil(graph, visited, i, count + 1)) {
+                    return true;
+                }
+                visited[i] = false;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        int[][] graph = {
+            {0, 1, 0, 1, 0},
+            {1, 0, 1, 1, 1},
+            {0, 1, 0, 0, 1},
+            {1, 1, 0, 0, 1},
+            {0, 1, 1, 1, 0}
+        };
+
+        if (isHamiltonianCycle(graph)) {
+            System.out.println("The given graph is a Hamiltonian cycle.");
+        } else {
+            System.out.println("The given graph is not a Hamiltonian cycle.");
+        }
+    }
+}
+
+Q2
+
+public class FourQueens {
+
+    static void printBoard(int[] queens) {
+        int N = queens.length;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (queens[i] == j) {
+                    System.out.print("Q ");
+                } else {
+                    System.out.print("_ ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        int[] queens = {1, 3, 0, 2}; // Example board configuration
+
+        System.out.println("Board Configuration:");
+        printBoard(queens);
+    }
+}
