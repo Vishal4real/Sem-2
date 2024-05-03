@@ -1,0 +1,103 @@
+-------------------------------------------------------------------------------------------------
+Q1 activity_main.xml
+-------------------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Progress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonStart"
+        android:layout_margin="24dp"
+        android:visibility="invisible" />
+
+</RelativeLayout>
+
+-------------------------------------------------------------------------------------------------
+Q1 activity_main.java
+-------------------------------------------------------------------------------------------------
+
+package com.example.slip_sol;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    private Button buttonStart;
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private Handler handler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        buttonStart = findViewById(R.id.buttonStart);
+        progressBar = findViewById(R.id.progressBar);
+
+        buttonStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startProgress();
+            }
+        });
+    }
+
+    private void startProgress() {
+        progressStatus = 0;
+        progressBar.setVisibility(View.VISIBLE);
+        new Thread(new Runnable() {
+            public void run() {
+                while (progressStatus < 100) {
+                    progressStatus += 1;
+                    // Update the progress bar and display the current value
+                    handler.post(new Runnable() {
+                        public void run() {
+                            progressBar.setProgress(progressStatus);
+                        }
+                    });
+                    try {
+                        // Sleep for 50 milliseconds.
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // When task completed set visibility to GONE
+                progressBar.post(new Runnable() {
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }).start();
+    }
+}
+
+
+
+-------------------------------------------------------------------------------------------------
+Q2 activity_main.xml
+-------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------
+Q2 activity_main.java
+-------------------------------------------------------------------------------------------------

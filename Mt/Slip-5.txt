@@ -1,0 +1,313 @@
+-------------------------------------------------------------------------------------------------
+Q1 activity_main.xml
+-------------------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/buttonShowDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Alert Dialog"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>
+
+-------------------------------------------------------------------------------------------------
+Q1 activity_main.java
+-------------------------------------------------------------------------------------------------
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button buttonShowDialog = findViewById(R.id.buttonShowDialog);
+
+        buttonShowDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayAlertDialog();
+            }
+        });
+    }
+
+    private void displayAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setTitle("Alert Dialog Example");
+        alertDialogBuilder.setMessage("This is a simple AlertDialog message.");
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+}
+
+-------------------------------------------------------------------------------------------------
+Q2 activity_main.xml
+-------------------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your name"
+        android:layout_margin="16dp"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextName"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButtonBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bold" />
+
+        <RadioButton
+            android:id="@+id/radioButtonUnderline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Underline" />
+
+        <RadioButton
+            android:id="@+id/radioButtonItalic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Italic" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkBoxColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change color"
+        android:layout_below="@id/radioGroupFormat"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/buttonDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Display"
+        android:layout_below="@id/checkBoxColor"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/buttonClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:layout_below="@id/buttonDisplay"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:layout_below="@id/buttonDisplay"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/textViewMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:layout_below="@id/buttonClear"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
+
+</RelativeLayout>
+
+
+-------------------------------------------------------------------------------------------------
+Q2 activity_main.java
+-------------------------------------------------------------------------------------------------
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+    private EditText editTextName;
+    private RadioGroup radioGroupFormat;
+    private RadioButton radioButtonBold, radioButtonUnderline, radioButtonItalic;
+    private CheckBox checkBoxColor;
+    private Button buttonDisplay, buttonClear, buttonExit;
+    private TextView textViewMessage;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editTextName = findViewById(R.id.editTextName);
+        radioGroupFormat = findViewById(R.id.radioGroupFormat);
+        radioButtonBold = findViewById(R.id.radioButtonBold);
+        radioButtonUnderline = findViewById(R.id.radioButtonUnderline);
+        radioButtonItalic = findViewById(R.id.radioButtonItalic);
+        checkBoxColor = findViewById(R.id.checkBoxColor);
+        buttonDisplay = findViewById(R.id.buttonDisplay);
+        buttonClear = findViewById(R.id.buttonClear);
+        buttonExit = findViewById(R.id.buttonExit);
+        textViewMessage = findViewById(R.id.textViewMessage);
+
+        buttonDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayMessage();
+            }
+        });
+
+        buttonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearFields();
+            }
+        });
+
+        buttonExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void displayMessage() {
+        String name = editTextName.getText().toString().trim();
+        String message = "Hello, " + name + "!";
+
+        // Apply formatting based on radio button selection
+        if (radioButtonBold.isChecked() && radioButtonUnderline.isChecked() && radioButtonItalic.isChecked()) {
+            message = applyAllFormatting(message);
+        } else if (radioButtonBold.isChecked() && radioButtonUnderline.isChecked()) {
+            message = applyBoldAndUnderline(message);
+        } else if (radioButtonBold.isChecked() && radioButtonItalic.isChecked()) {
+            message = applyBoldAndItalic(message);
+        } else if (radioButtonUnderline.isChecked() && radioButtonItalic.isChecked()) {
+            message = applyUnderlineAndItalic(message);
+        } else if (radioButtonBold.isChecked()) {
+            message = applyBold(message);
+        } else if (radioButtonUnderline.isChecked()) {
+            message = applyUnderline(message);
+        } else if (radioButtonItalic.isChecked()) {
+            message = applyItalic(message);
+        }
+
+        // Apply color if checkbox is checked
+        if (checkBoxColor.isChecked()) {
+            message = applyColor(message);
+        }
+
+        textViewMessage.setText(message);
+    }
+
+    private String applyBold(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private String applyUnderline(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new UnderlineSpan(), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private String applyItalic(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private String applyBoldAndUnderline(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new UnderlineSpan(), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private String applyBoldAndItalic(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private String applyUnderlineAndItalic(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new UnderlineSpan(), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private String applyAllFormatting(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new UnderlineSpan(), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private String applyColor(String message) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new android.text.style.ForegroundColorSpan(Color.RED), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString.toString();
+    }
+
+    private void clearFields() {
+        editTextName.setText("");
+        textViewMessage.setText("");
+        radioGroupFormat.clearCheck();
+        checkBoxColor.setChecked(false);
+    }
+}
