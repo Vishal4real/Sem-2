@@ -1,0 +1,148 @@
+Q1
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+// Middleware to parse JSON body
+app.use(bodyParser.json());
+
+// Route to handle employee registration form submission
+app.post('/register', (req, res) => {
+    // Extract data from request body
+    const { name, email, mobile, department, joiningDate } = req.body;
+
+    // Perform validation
+    const errors = [];
+
+    // Validate name
+    if (!name || typeof name !== 'string') {
+        errors.push('Name is required and must be a string.');
+    }
+
+    // Validate email
+    if (!email || typeof email !== 'string' || !isValidEmail(email)) {
+        errors.push('Email is required and must be a valid email address.');
+    }
+
+    // Validate mobile number
+    if (!mobile || !isValidMobile(mobile)) {
+        errors.push('Mobile number is required and must be a valid 10-digit number.');
+    }
+
+    // Validate department
+    if (!department || typeof department !== 'string') {
+        errors.push('Department is required and must be a string.');
+    }
+
+    // Validate joining date
+    if (!joiningDate || !isValidDate(joiningDate)) {
+        errors.push('Joining date is required and must be a valid date (YYYY-MM-DD).');
+    }
+
+    // Check if there are any validation errors
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
+
+    // If validation passes, return success response
+    res.status(200).json({ message: 'Employee registration successful.' });
+});
+
+// Helper function to validate email
+function isValidEmail(email) {
+    // Simple email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Helper function to validate mobile number
+function isValidMobile(mobile) {
+    // Mobile number validation regex (10-digit number)
+    const mobileRegex = /^[0-9]{10}$/;
+    return mobileRegex.test(mobile);
+}
+
+// Helper function to validate date (YYYY-MM-DD format)
+function isValidDate(dateString) {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(dateString)) return false;
+    const date = new Date(dateString);
+    return !isNaN(date.getTime());
+}
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+Q2
+
+// Define an event emitter class
+class EventEmitter {
+    constructor() {
+        this.events = {};
+    }
+
+    // Method to add event listener
+    on(event, callback) {
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+        this.events[event].push(callback);
+    }
+
+    // Method to emit event
+    emit(event, ...args) {
+        if (this.events[event]) {
+            this.events[event].forEach(callback => {
+                callback(...args);
+            });
+        }
+    }
+}
+
+// Create an instance of the EventEmitter
+const eventEmitter = new EventEmitter();
+
+// Define some events and their corresponding handlers
+eventEmitter.on('event1', () => {
+    console.log('Event 1 occurred');
+});
+
+eventEmitter.on('event2', (arg1, arg2) => {
+    console.log(`Event 2 occurred with arguments: ${arg1}, ${arg2}`);
+});
+
+// Add event listeners for right-click and double left-click
+document.addEventListener('contextmenu', () => {
+    eventEmitter.emit('rightClick');
+});
+
+let lastClickTime = 0;
+document.addEventListener('click', (event) => {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastClickTime;
+
+    if (timeDiff < 300) {
+        eventEmitter.emit('doubleLeftClick');
+    }
+    lastClickTime = currentTime;
+});
+
+// Main loop to listen for events
+function mainLoop() {
+    // Simulate events being detected
+    eventEmitter.emit('event1');
+    eventEmitter.emit('event2', 'argument1', 'argument2');
+
+    // Add more events and logic here
+
+    // Call mainLoop again after a delay
+    setTimeout(mainLoop, 2000);
+}
+
+// Start the main loop
+mainLoop();

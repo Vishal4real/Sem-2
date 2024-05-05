@@ -1,0 +1,101 @@
+Q1
+const mysql = require('mysql');
+
+// Create a connection to the MySQL server
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'your_username', // Replace with your MySQL username
+  password: 'your_password' // Replace with your MySQL password
+});
+
+// Connect to the MySQL server
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL server: ', err);
+    return;
+  }
+  console.log('Connected to MySQL server');
+
+  // Create the student database
+  connection.query('CREATE DATABASE IF NOT EXISTS studentDB', (err) => {
+    if (err) {
+      console.error('Error creating student database: ', err);
+      return;
+    }
+    console.log('Student database created');
+
+    // Use the student database
+    connection.query('USE studentDB', (err) => {
+      if (err) {
+        console.error('Error using student database: ', err);
+        return;
+      }
+
+      // Create the students table
+      const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS students (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          age INT NOT NULL,
+          grade VARCHAR(10)
+        )
+      `;
+      connection.query(createTableQuery, (err) => {
+        if (err) {
+          console.error('Error creating students table: ', err);
+          return;
+        }
+        console.log('Students table created');
+
+        // Close the connection
+        connection.end();
+      });
+    });
+  });
+});
+
+Q2
+
+<!DOCTYPE html>
+<html lang="en" ng-app="validationApp">
+<head>
+<meta charset="UTF-8">
+<title>Username Validation</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="validationController">
+    <h2>Username Validation</h2>
+    <label>Username:</label><br>
+    <input type="text" ng-model="username" ng-change="validateUsername()" required><br>
+    <span ng-show="showError && !isValid">Enter username</span>
+    <span ng-show="showError && isValid && username.length < 3">Username is too short</span>
+    <span ng-show="showError && isValid && username.length >= 3">Valid username</span><br>
+
+    <label>Password:</label><br>
+    <input type="password" ng-model="password" required minlength="8"><br>
+    <span ng-show="password.$error.required && password.$dirty">Password is required</span>
+    <span ng-show="password.$error.minlength && password.$dirty">Password should be minimum 8 characters</span><br>
+</div>
+
+<script>
+var app = angular.module('validationApp', []);
+
+app.controller('validationController', function($scope) {
+    $scope.showError = false;
+    $scope.isValid = false;
+
+    $scope.validateUsername = function() {
+        $scope.showError = true;
+        if ($scope.username) {
+            $scope.isValid = true;
+        } else {
+            $scope.isValid = false;
+        }
+    };
+});
+</script>
+
+</body>
+</html>

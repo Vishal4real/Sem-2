@@ -1,0 +1,87 @@
+Q1.Create a Simple Web Server using node js
+
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello, World!\n');
+});
+
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`);
+});
+
+Q2. Create an HTML form that contain the Employee Registration details and write a JavaScript to 
+validate DOB, Joining Date, and Salary.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Registration Form</title>
+<style>
+  .error {
+    color: red;
+  }
+</style>
+</head>
+<body>
+<h2>Employee Registration Form</h2>
+<form id="registrationForm" onsubmit="return validateForm()">
+  <label for="dob">Date of Birth:</label><br>
+  <input type="date" id="dob" name="dob"><br>
+  <span id="dobError" class="error"></span><br>
+
+  <label for="joiningDate">Joining Date:</label><br>
+  <input type="date" id="joiningDate" name="joiningDate"><br>
+  <span id="joiningDateError" class="error"></span><br>
+
+  <label for="salary">Salary:</label><br>
+  <input type="number" id="salary" name="salary"><br>
+  <span id="salaryError" class="error"></span><br>
+
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+function validateForm() {
+  const dob = document.getElementById('dob').value;
+  const joiningDate = document.getElementById('joiningDate').value;
+  const salary = document.getElementById('salary').value;
+
+  let valid = true;
+
+  // Validate Date of Birth
+  if (!dob) {
+    document.getElementById('dobError').textContent = 'Date of Birth is required';
+    valid = false;
+  } else {
+    document.getElementById('dobError').textContent = '';
+  }
+
+  // Validate Joining Date
+  if (!joiningDate) {
+    document.getElementById('joiningDateError').textContent = 'Joining Date is required';
+    valid = false;
+  } else {
+    document.getElementById('joiningDateError').textContent = '';
+  }
+
+  // Validate Salary
+  if (!salary) {
+    document.getElementById('salaryError').textContent = 'Salary is required';
+    valid = false;
+  } else if (salary <= 0) {
+    document.getElementById('salaryError').textContent = 'Salary must be greater than zero';
+    valid = false;
+  } else {
+    document.getElementById('salaryError').textContent = '';
+  }
+
+  return valid;
+}
+</script>
+</body>
+</html>

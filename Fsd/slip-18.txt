@@ -1,0 +1,91 @@
+Q1.Using node js create a User Login System.
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+const users = [
+  { id: 1, email: 'user@example.com', password: 'password123' },
+  { id: 2, email: 'admin@example.com', password: 'admin123' }
+];
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.get('/', (req, res) => {
+  res.send('<h1>Welcome to the login page</h1><a href="/login">Login</a>');
+});
+
+app.get('/login', (req, res) => {
+  res.send(`
+    <h1>Login</h1>
+    <form action="/auth/login" method="POST">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required>
+
+      <button type="submit">Login</button>
+    </form>
+  `);
+});
+
+app.post('/auth/login', (req, res) => {
+  const { email, password } = req.body;
+
+  // Find user by email
+  const user = users.find(user => user.email === email);
+
+  if (!user) {
+    return res.status(401).send('<h1>Invalid email or password</h1>');
+  }
+
+  if (user.password !== password) {
+    return res.status(401).send('<h1>Invalid email or password</h1>');
+  }
+
+  res.redirect('/');
+});
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+Q2
+const mysql = require('mysql');
+
+// Create a connection to the MySQL server
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'your_username', // Replace with your MySQL username
+  password: 'your_password', // Replace with your MySQL password
+  database: 'your_database_name' // Replace with the name of your database
+});
+
+// Connect to the MySQL server
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL server: ', err);
+    return;
+  }
+  console.log('Connected to MySQL server');
+
+  // SQL query to select customers whose name starts with 'A'
+  const query = "SELECT * FROM customers WHERE name LIKE 'A%'";
+
+  // Execute the SQL query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error executing query: ', err);
+      return;
+    }
+    
+    // Display the customers whose name starts with 'A'
+    console.log('Customers whose name starts with "A":', results);
+
+    // Close the connection
+    connection.end();
+  });
+});

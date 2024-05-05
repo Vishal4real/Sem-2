@@ -1,0 +1,58 @@
+Q1
+const message = "Hello World!".toUpperCase();
+
+// Output the uppercase message
+console.log(message);
+
+Q2
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>User Details Form</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="myCtrl">
+    <h2>User Details Form</h2>
+    <form name="userForm" ng-submit="submitForm()" novalidate>
+        <label>Name:</label><br>
+        <input type="text" ng-model="user.name" name="name" required pattern="[a-zA-Z ]+"><br>
+        <span ng-show="userForm.name.$error.required">Name is required.</span>
+        <span ng-show="userForm.name.$error.pattern">Name should contain characters only.</span><br>
+
+        <label>Mobile Number:</label><br>
+        <input type="text" ng-model="user.mobile" name="mobile" required pattern="[0-9]{10}"><br>
+        <span ng-show="userForm.mobile.$error.required">Mobile number is required.</span>
+        <span ng-show="userForm.mobile.$error.pattern">Mobile number should contain 10 digits.</span><br>
+
+        <label>Pin Code:</label><br>
+        <input type="text" ng-model="user.pincode" name="pincode" required pattern="[0-9]{6}"><br>
+        <span ng-show="userForm.pincode.$error.required">Pin code is required.</span>
+        <span ng-show="userForm.pincode.$error.pattern">Pin code should contain 6 digits.</span><br>
+
+        <label>Email Address:</label><br>
+        <input type="email" ng-model="user.email" name="email" required><br>
+        <span ng-show="userForm.email.$error.required">Email address is required.</span>
+        <span ng-show="userForm.email.$error.email">Invalid email address.</span><br>
+
+        <button type="submit" ng-disabled="userForm.$invalid">Submit</button>
+    </form>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+
+app.controller('myCtrl', function($scope) {
+    $scope.user = {};
+
+    $scope.submitForm = function() {
+        console.log('Form submitted with data:', $scope.user);
+        // Here you can perform further actions like sending data to server, etc.
+    };
+});
+</script>
+
+</body>
+</html>

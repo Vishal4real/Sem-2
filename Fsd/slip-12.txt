@@ -1,0 +1,145 @@
+Q.1) Create a node.js file that Select all records from the "customers" table, and display the result 
+object on console
+
+//npm install mysql
+
+const mysql = require('mysql');
+
+// Create a connection to the MySQL server
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'your_username', 
+  password: 'your_password', 
+  database: 'your_database_name' 
+});
+
+// Connect to the MySQL server
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL server: ', err);
+    return;
+  }
+  console.log('Connected to MySQL server');
+
+  // SQL query to select all records from the customers table
+  const query = 'SELECT * FROM customers';
+
+  // Execute the SQL query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error executing query: ', err);
+      return;
+    }
+    
+    // Display the result object on the console
+    console.log('Result:', results);
+
+    // Close the connection
+    connection.end();
+  });
+});
+
+Q2.Create an HTML form for Student Feedback Form with Name, Email ID, Mobile No., feedback
+(Not good, good, very good, excellent) and write a JavaScript to validate all field using Regular 
+Expression
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Feedback Form</title>
+<style>
+  .error {
+    color: red;
+  }
+</style>
+</head>
+<body>
+<h2>Student Feedback Form</h2>
+<form id="feedbackForm" onsubmit="return validateForm()">
+  <label for="name">Name:</label><br>
+  <input type="text" id="name" name="name"><br>
+  <span id="nameError" class="error"></span><br>
+
+  <label for="email">Email ID:</label><br>
+  <input type="email" id="email" name="email"><br>
+  <span id="emailError" class="error"></span><br>
+
+  <label for="mobile">Mobile No.:</label><br>
+  <input type="text" id="mobile" name="mobile" pattern="[0-9]{10}" title="Enter a 10 digit mobile number"><br>
+  <span id="mobileError" class="error"></span><br>
+
+  <label for="feedback">Feedback:</label><br>
+  <select id="feedback" name="feedback">
+    <option value="">Select</option>
+    <option value="Not good">Not good</option>
+    <option value="Good">Good</option>
+    <option value="Very good">Very good</option>
+    <option value="Excellent">Excellent</option>
+  </select><br>
+  <span id="feedbackError" class="error"></span><br>
+
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+function validateForm() {
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const mobile = document.getElementById('mobile').value.trim();
+  const feedback = document.getElementById('feedback').value;
+
+  const nameRegex = /^[a-zA-Z\s]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const mobileRegex = /^[0-9]{10}$/;
+
+  let valid = true;
+
+  // Validate Name
+  if (!name) {
+    document.getElementById('nameError').textContent = 'Name is required';
+    valid = false;
+  } else if (!nameRegex.test(name)) {
+    document.getElementById('nameError').textContent = 'Enter a valid name';
+    valid = false;
+  } else {
+    document.getElementById('nameError').textContent = '';
+  }
+
+  // Validate Email
+  if (!email) {
+    document.getElementById('emailError').textContent = 'Email is required';
+    valid = false;
+  } else if (!emailRegex.test(email)) {
+    document.getElementById('emailError').textContent = 'Enter a valid email address';
+    valid = false;
+  } else {
+    document.getElementById('emailError').textContent = '';
+  }
+
+  // Validate Mobile
+  if (!mobile) {
+    document.getElementById('mobileError').textContent = 'Mobile number is required';
+    valid = false;
+  } else if (!mobileRegex.test(mobile)) {
+    document.getElementById('mobileError').textContent = 'Enter a valid 10 digit mobile number';
+    valid = false;
+  } else {
+    document.getElementById('mobileError').textContent = '';
+  }
+
+  // Validate Feedback
+  if (!feedback) {
+    document.getElementById('feedbackError').textContent = 'Feedback is required';
+    valid = false;
+  } else {
+    document.getElementById('feedbackError').textContent = '';
+  }
+
+  return valid;
+}
+</script>
+</body>
+</html>

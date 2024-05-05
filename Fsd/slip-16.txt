@@ -1,0 +1,140 @@
+Q1
+const fs = require('fs');
+
+class RecipeBook {
+    constructor() {
+        this.recipes = [];
+    }
+
+    // Add a new recipe
+    addRecipe(recipe) {
+        this.recipes.push(recipe);
+        this.saveToFile();
+    }
+
+    // Remove a recipe by its name
+    removeRecipe(name) {
+        this.recipes = this.recipes.filter(recipe => recipe.name !== name);
+        this.saveToFile();
+    }
+
+    // Update a recipe by its name
+    updateRecipe(name, newRecipe) {
+        const index = this.recipes.findIndex(recipe => recipe.name === name);
+        if (index !== -1) {
+            this.recipes[index] = newRecipe;
+            this.saveToFile();
+            return true;
+        }
+        return false; // Recipe not found
+    }
+
+    // Get all recipes
+    getAllRecipes() {
+        return this.recipes;
+    }
+
+    // Get a recipe by its name
+    getRecipeByName(name) {
+        return this.recipes.find(recipe => recipe.name === name);
+    }
+
+    // Save recipes to a file
+    saveToFile() {
+        fs.writeFile('recipes.json', JSON.stringify(this.recipes, null, 2), (err) => {
+            if (err) {
+                console.error('Error saving recipes to file:', err);
+            } else {
+                console.log('Recipes saved to file');
+            }
+        });
+    }
+
+    // Load recipes from a file
+    loadFromFile() {
+        try {
+            const data = fs.readFileSync('recipes.json');
+            this.recipes = JSON.parse(data);
+        } catch (err) {
+            console.error('Error loading recipes from file:', err);
+        }
+    }
+}
+
+// Example usage:
+const recipeBook = new RecipeBook();
+
+// Load recipes from file (if any)
+recipeBook.loadFromFile();
+
+// Add some recipes
+recipeBook.addRecipe({ name: 'Pasta', ingredients: ['Pasta', 'Tomato sauce', 'Cheese'] });
+recipeBook.addRecipe({ name: 'Pizza', ingredients: ['Pizza dough', 'Tomato sauce', 'Cheese', 'Toppings'] });
+
+// Get all recipes
+console.log('All recipes:', recipeBook.getAllRecipes());
+
+// Get recipe by name
+console.log('Recipe by name:', recipeBook.getRecipeByName('Pasta'));
+
+// Update a recipe
+recipeBook.updateRecipe('Pasta', { name: 'Spaghetti', ingredients: ['Spaghetti', 'Tomato sauce', 'Meatballs'] });
+
+// Remove a recipe
+recipeBook.removeRecipe('Pizza');
+
+// Get all recipes after modifications
+console.log('All recipes after modifications:', recipeBook.getAllRecipes());
+
+Q2
+
+// Define an EventEmitter class
+class EventEmitter {
+    constructor() {
+        this.events = {};
+    }
+
+    // Add event listener
+    on(event, callback) {
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+        this.events[event].push(callback);
+    }
+
+    // Emit event
+    emit(event, ...args) {
+        if (this.events[event]) {
+            this.events[event].forEach(callback => {
+                callback(...args);
+            });
+        }
+    }
+}
+
+// Create an instance of EventEmitter
+const eventEmitter = new EventEmitter();
+
+// Add event listeners
+eventEmitter.on('event1', () => {
+    console.log('Event 1 occurred');
+});
+
+eventEmitter.on('event2', (arg1, arg2) => {
+    console.log(`Event 2 occurred with arguments: ${arg1}, ${arg2}`);
+});
+
+// Main loop to listen for events
+function mainLoop() {
+    // Simulate events being detected
+    eventEmitter.emit('event1');
+    eventEmitter.emit('event2', 'argument1', 'argument2');
+
+    // Add more events and logic here
+
+    // Call mainLoop again after a delay
+    setTimeout(mainLoop, 2000);
+}
+
+// Start the main loop
+mainLoop();

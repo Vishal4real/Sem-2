@@ -1,0 +1,57 @@
+Q1
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+// Create a server
+const server = http.createServer((req, res) => {
+    // Set the content type to HTML
+    res.setHeader('Content-Type', 'text/html');
+
+    // Read the HTML file from the file system
+    const filePath = path.join(__dirname, 'index.html');
+
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            // If there is an error reading the file, send a 500 Internal Server Error response
+            res.writeHead(500);
+            res.end('Error reading file');
+            return;
+        }
+
+        // Send the HTML content as the response
+        res.writeHead(200);
+        res.end(data);
+    });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`);
+});
+
+Q2
+// modules.js
+
+// Function to return today's date and time
+function getCurrentDateTime() {
+    const currentDate = new Date();
+    return currentDate.toLocaleString();
+}
+
+// Export the function to make it available externally
+module.exports = {
+    getCurrentDateTime: getCurrentDateTime
+};
+---------------------------------------------------------------------------
+// app.js
+
+// Require the modules.js file
+const myModule = require('./modules');
+
+// Call the exported function to get today's date and time
+const dateTime = myModule.getCurrentDateTime();
+
+// Output the result
+console.log('Today\'s date and time:', dateTime);

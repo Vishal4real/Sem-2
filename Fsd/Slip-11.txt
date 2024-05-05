@@ -1,0 +1,81 @@
+Q1.Create a Node.js file that demonstrates create Movie database and table in MySQL
+
+const mysql = require('mysql');
+
+// Create a connection to the MySQL server
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'your_username', // Replace with your MySQL username
+  password: 'your_password', // Replace with your MySQL password
+  database: 'your_database_name' // Replace with the name you want for your database
+});
+
+// Connect to the MySQL server
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL server: ', err);
+    return;
+  }
+  console.log('Connected to MySQL server');
+
+  // SQL query to create the movie table
+  const createTableQuery = `
+    CREATE TABLE movies (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      director VARCHAR(255),
+      year INT
+    )
+  `;
+
+  // Execute the SQL query to create the table
+  connection.query(createTableQuery, (err, result) => {
+    if (err) {
+      console.error('Error creating table: ', err);
+      return;
+    }
+    console.log('Movie table created successfully');
+    // Close the connection
+    connection.end();
+  });
+});
+
+
+Q.2 Write node js application that transfer a file as an attachment on web and enables browser to 
+prompt the user to download file using express js
+
+//npm install express
+
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = 3000;
+
+// Define the route to handle file download
+app.get('/download', (req, res) => {
+  // File path
+  const filePath = path.join(__dirname, 'files', 'example.txt');
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      res.status(404).send('File not found');
+      return;
+    }
+
+    // Set headers to trigger file download prompt
+    res.setHeader('Content-Disposition', 'attachment; filename="example.txt"');
+    res.setHeader('Content-Type', 'text/plain');
+
+    // Stream the file to the response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  });
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

@@ -1,0 +1,70 @@
+Q1 
+check this link for ansewer https://github.com/Vishal4real/Single-page-app
+
+Q2
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Details</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<div ng-controller="studentController">
+    <h2>Student Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="student in students">
+                <td>{{ student.id }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.grade }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    var studentApp = angular.module('studentApp', []);
+
+studentApp.controller('studentController', function($scope) {
+    $scope.students = [
+        { id: 1, name: 'John Doe', age: 20, grade: 'A' },
+        { id: 2, name: 'Jane Smith', age: 21, grade: 'B' },
+        { id: 3, name: 'Michael Johnson', age: 22, grade: 'C' },
+        { id: 4, name: 'Emily Davis', age: 23, grade: 'A' },
+        { id: 5, name: 'William Brown', age: 24, grade: 'B' },
+        { id: 6, name: 'Olivia Wilson', age: 25, grade: 'C' },
+        { id: 7, name: 'James Taylor', age: 26, grade: 'A' },
+        { id: 8, name: 'Sophia Martinez', age: 27, grade: 'B' },
+        { id: 9, name: 'Benjamin Anderson', age: 28, grade: 'C' },
+        { id: 10, name: 'Isabella Thomas', age: 29, grade: 'A' }
+    ];
+});
+
+</script>
+</body>
+</html>

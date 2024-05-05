@@ -1,0 +1,57 @@
+Q1
+chatgpt it!
+
+Q2
+
+<!DOCTYPE html>
+<html lang="en" ng-app="validationApp">
+<head>
+<meta charset="UTF-8">
+<title>Username and Password Validation</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="validationController">
+    <h2>Username and Password Validation</h2>
+    <label>Username:</label><br>
+    <input type="text" ng-model="username" ng-change="validateUsername()"><br>
+    <span ng-show="showError && !isValidUsername">Enter username</span>
+    <span ng-show="showError && isValidUsername && username.length < 3">Username is too short</span>
+    <span ng-show="showError && isValidUsername && username.length >= 3">Valid username</span><br>
+
+    <label>Password:</label><br>
+    <input type="password" ng-model="password" ng-change="validatePassword()"><br>
+    <span ng-show="showError && !isValidPassword">Password is too short</span>
+</div>
+
+<script>
+var app = angular.module('validationApp', []);
+
+app.controller('validationController', function($scope) {
+    $scope.showError = false;
+    $scope.isValidUsername = false;
+    $scope.isValidPassword = false;
+
+    $scope.validateUsername = function() {
+        $scope.showError = true;
+        if ($scope.username) {
+            $scope.isValidUsername = true;
+        } else {
+            $scope.isValidUsername = false;
+        }
+    };
+
+    $scope.validatePassword = function() {
+        $scope.showError = true;
+        if ($scope.password && $scope.password.length >= 8) {
+            $scope.isValidPassword = true;
+        } else {
+            $scope.isValidPassword = false;
+        }
+    };
+});
+</script>
+
+</body>
+</html>

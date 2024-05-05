@@ -1,0 +1,79 @@
+Q1
+
+<!DOCTYPE html>
+<html lang="en" ng-app="locationApp">
+<head>
+<meta charset="UTF-8">
+<title>Current Web Page Location</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="locationController">
+    <h2>Current Web Page Location:</h2>
+    <p>{{ pageLocation }}</p>
+</div>
+
+<script>
+var app = angular.module('locationApp', []);
+
+app.controller('locationController', function($scope, $window) {
+    $scope.pageLocation = $window.location.href;
+});
+</script>
+
+</body>
+</html>
+
+Q2
+
+// Define an event emitter class
+class EventEmitter {
+    constructor() {
+        this.events = {};
+    }
+
+    // Method to add event listener
+    on(event, callback) {
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+        this.events[event].push(callback);
+    }
+
+    // Method to emit event
+    emit(event, ...args) {
+        if (this.events[event]) {
+            this.events[event].forEach(callback => {
+                callback(...args);
+            });
+        }
+    }
+}
+
+// Create an instance of the EventEmitter
+const eventEmitter = new EventEmitter();
+
+// Define some events and their corresponding handlers
+eventEmitter.on('event1', () => {
+    console.log('Event 1 occurred');
+});
+
+eventEmitter.on('event2', (arg1, arg2) => {
+    console.log(`Event 2 occurred with arguments: ${arg1}, ${arg2}`);
+});
+
+// Main loop to listen for events
+function mainLoop() {
+    // Simulate events being detected
+    eventEmitter.emit('event1');
+    eventEmitter.emit('event2', 'argument1', 'argument2');
+
+    // Add more events and logic here
+
+    // Call mainLoop again after a delay
+    setTimeout(mainLoop, 2000);
+}
+
+// Start the main loop
+mainLoop();

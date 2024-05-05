@@ -1,0 +1,89 @@
+Q.1) Create a Node.js file that will convert the output "HELLO WORLD!" into lower-case letters.
+// Convert "HELLO WORLD!" to lowercase
+const message = "HELLO WORLD!".toLowerCase();
+
+// Output the lowercase message
+console.log(message);
+
+Q.2) Create an HTML form that contain the Student Registration details and write a JavaScript to 
+validate Student first and last name as it should not contain other than alphabets and age should 
+be between 18 to 50
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration Form</title>
+<style>
+  .error {
+    color: red;
+  }
+</style>
+</head>
+<body>
+<h2>Student Registration Form</h2>
+<form id="registrationForm" onsubmit="return validateForm()">
+  <label for="firstName">First Name:</label><br>
+  <input type="text" id="firstName" name="firstName"><br>
+  <span id="firstNameError" class="error"></span><br>
+
+  <label for="lastName">Last Name:</label><br>
+  <input type="text" id="lastName" name="lastName"><br>
+  <span id="lastNameError" class="error"></span><br>
+
+  <label for="age">Age:</label><br>
+  <input type="number" id="age" name="age"><br>
+  <span id="ageError" class="error"></span><br>
+
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+function validateForm() {
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const age = document.getElementById('age').value;
+
+  const nameRegex = /^[a-zA-Z]+$/;
+
+  let valid = true;
+
+  // Validate First Name
+  if (!firstName) {
+    document.getElementById('firstNameError').textContent = 'First name is required';
+    valid = false;
+  } else if (!nameRegex.test(firstName)) {
+    document.getElementById('firstNameError').textContent = 'Enter a valid first name (alphabets only)';
+    valid = false;
+  } else {
+    document.getElementById('firstNameError').textContent = '';
+  }
+
+  // Validate Last Name
+  if (!lastName) {
+    document.getElementById('lastNameError').textContent = 'Last name is required';
+    valid = false;
+  } else if (!nameRegex.test(lastName)) {
+    document.getElementById('lastNameError').textContent = 'Enter a valid last name (alphabets only)';
+    valid = false;
+  } else {
+    document.getElementById('lastNameError').textContent = '';
+  }
+
+  // Validate Age
+  if (!age) {
+    document.getElementById('ageError').textContent = 'Age is required';
+    valid = false;
+  } else if (age < 18 || age > 50) {
+    document.getElementById('ageError').textContent = 'Age should be between 18 and 50';
+    valid = false;
+  } else {
+    document.getElementById('ageError').textContent = '';
+  }
+
+  return valid;
+}
+</script>
+</body>
+</html>
