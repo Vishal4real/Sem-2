@@ -59,3 +59,24 @@ http.createServer(function (req, res) {
 }).listen(port, () => {
     console.log(`Server running at port ${port}`);
 });
+
+//index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Append - Files</title>
+</head>
+<body>
+    <h2>Here you can append files</h2>
+    <form action="/" method="post">
+        <label for="file1">First File:</label>
+        <input type="file" id="file1" name="file1"><br>
+        <label for="file2">Second File:</label>
+        <input type="file" id="file2" name="file2"><br>
+        <input type="submit" value="Append">
+    </form>
+</body>
+</html>
