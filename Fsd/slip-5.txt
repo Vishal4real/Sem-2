@@ -24,6 +24,9 @@ Q1.Create a Node.js file that writes an HTML form, with an upload field
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const http = require('http');
+const fs = require('fs');
+const multer = require('multer'); // Import multer
 
 // Create Express app
 const app = express();
@@ -31,17 +34,25 @@ const app = express();
 // Set up middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Set up multer for file uploads
+const upload = multer({ dest: 'uploads/' }); // Define the destination folder for uploads
+
 // Define routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.post('/upload', (req, res) => {
+app.post('/upload', upload.single('file'), (req, res) => {
     // Handle file upload here
-    const uploadedFile = req.files.file;
-    // Do something with the uploaded file
-    
-    res.send('File uploaded successfully!');
+    const uploadedFile = req.file; // Use req.file instead of req.files
+    fs.readFile(uploadedFile.path, (err, data) => {
+        if (err) {
+            return res.status(500).send('Error uploading file');
+        }
+        res.writeHead(200, { "Content-Type": "Text/html" });
+        res.write(data);
+        res.end();
+    });
 });
 
 // Start the server
